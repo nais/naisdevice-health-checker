@@ -1,8 +1,11 @@
 name: Test, build and release
+
 on: push
+
 jobs:
   version:
     runs-on: ubuntu-latest
+
     outputs:
       version: ${{ steps.version.outputs.version }}
 
@@ -51,3 +54,37 @@ jobs:
 
       - name: Run tests
         run: composer run test
+
+  build-phar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache-dir
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-dev -o
+
+      - name: Build phar archive
+        run: |
+          mkdir -p ./bin
+          php -d phar.readonly=off create-phar.php naisdevice-health-checker.php bin
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: naisdevice-health-checker
+          path: bin
