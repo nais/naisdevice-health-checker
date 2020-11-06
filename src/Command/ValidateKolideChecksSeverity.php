@@ -9,7 +9,6 @@ use RuntimeException;
 use Symfony\Component\Console\{
     Command\Command,
     Input\InputInterface,
-    Input\InputOption,
     Output\OutputInterface,
 };
 
@@ -20,8 +19,7 @@ class ValidateKolideChecksSeverity extends BaseCommand {
     protected function configure() : void {
         $this
             ->setDescription('Validate Kolide checks for missing severity tags')
-            ->setHelp('Make sure we have set severity tags for all Kolide checks connected to our account')
-            ->addOption('kolide-api-token', 't', InputOption::VALUE_REQUIRED, 'Token used with the Kolide API');
+            ->setHelp('Make sure we have set severity tags for all Kolide checks connected to our account');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output) : void {
@@ -29,11 +27,13 @@ class ValidateKolideChecksSeverity extends BaseCommand {
             return;
         }
 
-        if (empty($input->getOption('kolide-api-token'))) {
-            throw new RuntimeException('Specity a token for the Kolide API using -t/--kolide-api-token');
+        $kolideApiToken = $this->env('KOLIDE_API_TOKEN');
+
+        if ('' === $kolideApiToken) {
+            throw new RuntimeException('Specity a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable');
         }
 
-        $this->setKolideApiClient(new KolideApiClient($input->getOption('kolide-api-token')));
+        $this->setKolideApiClient(new KolideApiClient($kolideApiToken));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) : int {

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @coversDefaultClass Nais\Device\Command\ValidateKolideChecksSeverity
+ * @coversDefaultClass Naisdevice\HealthChecker\Command\ValidateKolideChecksSeverity
  */
 class ValidateKolideChecksSeverityTest extends TestCase {
     /**
