@@ -1,5 +1,5 @@
 <?php
-namespace Nais\Device;
+namespace Naisdevice\HealthChecker;
 
 use Symfony\Component\Console\Application;
 use Throwable;

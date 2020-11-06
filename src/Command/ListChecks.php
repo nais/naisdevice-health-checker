@@ -1,12 +1,14 @@
 <?php declare(strict_types=1);
-namespace Nais\Device\Command;
+namespace Naisdevice\HealthChecker\Command;
 
-use Nais\Device\KolideApiClient;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
+use Naisdevice\HealthChecker\KolideApiClient;
 use RuntimeException;
+use Symfony\Component\Console\{
+    Command\Command,
+    Input\InputInterface,
+    Input\InputOption,
+    Output\OutputInterface,
+};
 
 class ListChecks extends BaseCommand {
     /** @var string */

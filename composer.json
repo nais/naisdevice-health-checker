@@ -1,6 +1,6 @@
 {
-  "name": "nais/device-health-checker",
-  "description": "Check and update health status of Nais devices based on data from the Kolide API",
+  "name": "nais/naisdevice-health-checker",
+  "description": "Check and update health status of naisdevices based on data from the Kolide API",
   "license": "MIT",
   "authors": [
     {
@@ -18,12 +18,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Nais\\Device\\": "src/"
+      "Naisdevice\\HealthChecker\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Nais\\Device\\": "tests/"
+      "Naisdevice\\HealthChecker\\": "tests/"
     }
   },
   "scripts": {

@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Nais\Device;
+namespace Naisdevice\HealthChecker;
 
 class Severity {
     const INFO     = -1;     // Used for checks we want to ignore

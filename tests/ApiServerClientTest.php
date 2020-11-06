@@ -1,12 +1,14 @@
 <?php declare(strict_types=1);
-namespace Nais\Device;
+namespace Naisdevice\HealthChecker;
 
+use GuzzleHttp\{
+    Client as HttpClient,
+    Handler\MockHandler,
+    HandlerStack,
+    Psr7\Response,
+    Middleware,
+};
 use PHPUnit\Framework\TestCase;
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Middleware;
 
 /**
  * @coversDefaultClass Nais\Device\ApiServerClient

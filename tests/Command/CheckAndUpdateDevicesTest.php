@@ -1,13 +1,17 @@
 <?php declare(strict_types=1);
-namespace Nais\Device\Command;
+namespace Naisdevice\HealthChecker\Command;
 
-use Nais\Device\ApiServerClient;
-use Nais\Device\KolideApiClient;
+use Naisdevice\HealthChecker\{
+    ApiServerClient,
+    KolideApiClient,
+};
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\ApplicationTester;
-use Symfony\Component\Console\Tester\CommandTester;
 use RuntimeException;
+use Symfony\Component\Console\{
+    Application,
+    Tester\ApplicationTester,
+    Tester\CommandTester,
+};
 
 /**
  * @coversDefaultClass Nais\Device\Command\CheckAndUpdateDevices

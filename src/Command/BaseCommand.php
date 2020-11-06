@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
-namespace Nais\Device\Command;
+namespace Naisdevice\HealthChecker\Command;
 
-use Nais\Device\ApiServerClient;
-use Nais\Device\KolideApiClient;
+use Naisdevice\HealthChecker\ApiServerClient;
+use Naisdevice\HealthChecker\KolideApiClient;
 use Symfony\Component\Console\Command\Command;
 
 abstract class BaseCommand extends Command {

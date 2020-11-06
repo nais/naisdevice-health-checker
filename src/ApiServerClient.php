@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Nais\Device;
+namespace Naisdevice\HealthChecker;
 
 use GuzzleHttp\Client as HttpClient;
 

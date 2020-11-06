@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Nais\Device\Exception;
+namespace Naisdevice\HealthChecker\Exception;
 
 use RuntimeException;
 

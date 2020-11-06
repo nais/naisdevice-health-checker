@@ -1,4 +1,20 @@
 <?php declare(strict_types=1);
+namespace Naisdevice\HealthChecker;
+
+use Phar;
+use RecursiveCallbackFilterIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use SplFileInfo;
+
+/**
+ * Print usage text and exit
+ *
+ * @param string $extra Add some extra text to a new line after the usage
+ * @param int $exitCode The code to exit with
+ * @return void
+ */
 function usage(string $extra = null, int $exitCode = 1) : void {
     echo sprintf('usage: php -d phar.readonly=off %s <script> <target-path>', $_SERVER['argv'][0]) . PHP_EOL;
 
@@ -13,10 +29,7 @@ if (3 !== $_SERVER['argc']) {
     usage('Incorrect parameter count');
 }
 
-// Path to the script we want to package
-$script = $_SERVER['argv'][1];
-
-// Directory to store the archive
+$script     = $_SERVER['argv'][1];
 $targetPath = $_SERVER['argv'][2];
 
 if (!is_file($script)) {
@@ -38,7 +51,6 @@ if (file_exists($archiveName) && !unlink($archiveName)) {
     ));
 }
 
-// Files / dirs to add to the archive
 $includeList = [
     'src',
     'vendor',

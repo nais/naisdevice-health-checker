@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
-namespace Nais\Device\Command;
+namespace Naisdevice\HealthChecker\Command;
 
-use Nais\Device\KolideApiClient;
+use Naisdevice\HealthChecker\KolideApiClient;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 

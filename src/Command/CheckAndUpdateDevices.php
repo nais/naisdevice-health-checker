@@ -1,18 +1,22 @@
 <?php declare(strict_types=1);
-namespace Nais\Device\Command;
+namespace Naisdevice\HealthChecker\Command;
 
-use Nais\Device\ApiServerClient;
-use Nais\Device\Exception\HealthCheckerException;
-use Nais\Device\Exception\MissingKolideDeviceException;
-use Nais\Device\Exception\MultipleKolideDevicesException;
-use Nais\Device\KolideApiClient;
-use Nais\Device\Severity;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Command\Command;
 use DateTime;
+use Naisdevice\HealthChecker\{
+    ApiServerClient,
+    Exception\HealthCheckerException,
+    Exception\MissingKolideDeviceException,
+    Exception\MultipleKolideDevicesException,
+    KolideApiClient,
+    Severity,
+};
 use RuntimeException;
+use Symfony\Component\Console\{
+    Input\InputInterface,
+    Input\InputOption,
+    Output\OutputInterface,
+    Command\Command,
+};
 
 class CheckAndUpdateDevices extends BaseCommand {
     /** @var string */
