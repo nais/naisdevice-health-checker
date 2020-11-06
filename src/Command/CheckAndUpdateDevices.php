@@ -26,27 +26,28 @@ class CheckAndUpdateDevices extends BaseCommand {
         $this
             ->setDescription('Update health status of Nais devices')
             ->setHelp('This command will update the health status of all Nais devices based on data from the Kolide API.')
-            ->addOption('kolide-api-token', 't', InputOption::VALUE_REQUIRED, 'Token used with the Kolide API')
-            ->addOption('ignore-checks', 'i', InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL, 'List of check IDs to ignore', [])
-            ->addOption('apiserver-username', 'u', InputOption::VALUE_OPTIONAL, 'Username used for API server authentication (basic auth)', 'device-health-checker')
-            ->addOption('apiserver-password', 'p', InputOption::VALUE_REQUIRED, 'Password used for API server authentication (basic auth)');
+            ->addOption('ignore-checks', 'i', InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL, 'List of check IDs to ignore', []);
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output) : void {
-        if (null === $this->kolideApiClient && empty($input->getOption('kolide-api-token'))) {
-            throw new RuntimeException('Specity a token for the Kolide API using -t/--kolide-api-token');
-        } else if (null === $this->apiServerClient && empty($input->getOption('apiserver-username'))) {
-            throw new RuntimeException('Specity a username for the API serveer using -u/--apiserver-username');
-        } else if (null === $this->apiServerClient && empty($input->getOption('apiserver-password'))) {
-            throw new RuntimeException('Specity a password for the API serveer using -p/--apiserver-password');
+        $kolideApiToken    = $this->env('KOLIDE_API_TOKEN');
+        $apiserverUsername = $this->env('APISERVER_USERNAME');
+        $apiserverPassword = $this->env('APISERVER_PASSWORD');
+
+        if (null === $this->kolideApiClient && '' === $kolideApiToken) {
+            throw new RuntimeException('Specify a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable');
+        } else if (null === $this->apiServerClient && '' === $apiserverUsername) {
+            throw new RuntimeException('Specify a username for the API server by setting the APISERVER_USERNAME environment variable');
+        } else if (null === $this->apiServerClient && '' === $apiserverPassword) {
+            throw new RuntimeException('Specify a password for the API server by setting the APISERVER_PASSWORD environment variable');
         }
 
         if (null === $this->kolideApiClient) {
-            $this->setKolideApiClient(new KolideApiClient($input->getOption('kolide-api-token')));
+            $this->setKolideApiClient(new KolideApiClient($kolideApiToken));
         }
 
         if (null === $this->apiServerClient) {
-            $this->setApiServerClient(new ApiServerClient($input->getOption('apiserver-username'), $input->getOption('apiserver-password')));
+            $this->setApiServerClient(new ApiServerClient($apiserverUsername, $apiserverPassword));
         }
     }
 
@@ -205,8 +206,8 @@ class CheckAndUpdateDevices extends BaseCommand {
      */
     private function log(OutputInterface $output, string $message, string $serial = null, string $platform = null, string $username = null, array $kolideDevices = null) : void {
         $output->writeln(json_encode(array_filter([
-            'component'     => 'device-health-checker',
-            'system'        => 'nais-device',
+            'component'     => 'naisdevice-health-checker',
+            'system'        => 'naisdevice',
             'message'       => $message,
             'serial'        => $serial,
             'platform'      => $platform,

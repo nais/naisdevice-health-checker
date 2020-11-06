@@ -17,21 +17,27 @@ use Symfony\Component\Console\{
  * @coversDefaultClass Naisdevice\HealthChecker\Command\CheckAndUpdateDevices
  */
 class CheckAndUpdateDevicesTest extends TestCase {
+    protected function setUp() : void {
+        putenv('KOLIDE_API_TOKEN');
+        putenv('APISERVER_USERNAME');
+        putenv('APISERVER_PASSWORD');
+    }
+
     public function getMissingParams() : array {
         return [
             'missing token' => [
                 [
-                    '-u' => 'username',
-                    '-p' => 'password',
+                    'APISERVER_USERNAME=username',
+                    'APISERVER_PASSWORD=password',
                 ],
-                'Specity a token',
+                'Specify a token',
             ],
             'missing password' => [
                 [
-                    '-u' => 'username',
-                    '-t' => 'token',
+                    'KOLIDE_API_TOKEN=token',
+                    'APISERVER_USERNAME=username',
                 ],
-                'Specity a password',
+                'Specify a password',
             ],
         ];
     }
@@ -40,10 +46,14 @@ class CheckAndUpdateDevicesTest extends TestCase {
      * @dataProvider getMissingParams
      * @covers ::initialize
      */
-    public function testFailsOnMissingOptions(array $params, string $error) : void {
+    public function testFailsOnMissingEnvVars(array $envVars, string $error) : void {
+        foreach ($envVars as $var) {
+            putenv($var);
+        }
+
         $commandTester = new CommandTester(new CheckAndUpdateDevices());
         $this->expectExceptionObject(new RuntimeException($error));
-        $commandTester->execute($params);
+        $commandTester->execute([]);
     }
 
     public function getDeviceData() : array {

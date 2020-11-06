@@ -30,7 +30,7 @@ class ValidateKolideChecksSeverity extends BaseCommand {
         $kolideApiToken = $this->env('KOLIDE_API_TOKEN');
 
         if ('' === $kolideApiToken) {
-            throw new RuntimeException('Specity a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable');
+            throw new RuntimeException('Specify a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable');
         }
 
         $this->setKolideApiClient(new KolideApiClient($kolideApiToken));

@@ -6,8 +6,8 @@ use Throwable;
 
 set_exception_handler(function(Throwable $e) : void {
     echo json_encode([
-        'component' => 'device-health-checker',
-        'system'    => 'nais-device',
+        'component' => 'naisdevice-health-checker',
+        'system'    => 'naisdevice',
         'message'   => $e->getMessage(),
         'timestamp' => time(),
     ]) . PHP_EOL;

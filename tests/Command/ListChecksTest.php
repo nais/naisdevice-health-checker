@@ -20,7 +20,7 @@ class ListChecksTest extends TestCase {
     public function testFailsOnMissingOption() : void {
         $commandTester = new CommandTester(new ListChecks());
         $this->expectExceptionObject(new RuntimeException(
-            'Specity a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable'
+            'Specify a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable'
         ));
         $commandTester->execute([]);
     }

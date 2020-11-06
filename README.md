@@ -1,8 +1,8 @@
-# Check and update health status of Nais devices
+# Check and update health status of naisdevices
 
 [![Test, build and release](https://github.com/nais/naisdevice-health-checker/workflows/Test,%20build%20and%20release/badge.svg)](https://github.com/nais/naisdevice-health-checker/actions?query=workflow%3A%22Test%2C+build+and+release%22) [![Kolide checks severity](https://github.com/nais/naisdevice-health-checker/workflows/Kolide%20checks%20severity/badge.svg)](https://github.com/nais/naisdevice-health-checker/actions?query=workflow%3A%22Kolide+checks+severity%22)
 
-Scripts dealing with device health status of all Nais devices based on checks from the Kolide API.
+Scripts dealing with device health status of all naisdevices based on checks from the Kolide API.
 
 ## Installation
 
@@ -32,7 +32,7 @@ It can be executed like a regular binary once it is set as executable (`chmod +x
 
 This command will validate that there exists a criticality level for all Kolide checks:
 
-    ./device-health-checker.phar kolide:validate-checks
+    ./naisdevice-health-checker.phar kolide:validate-checks
 
 This command is run as a scheduled workflow in this repository, and if the command finds checks with missing tags it will send a message to the `#naisdevice-kolide-admin` channel. This is done using a webhook that is owned by the `Kolide checks validation` Slack app installed on the NAV IT workspace.
 
@@ -46,7 +46,7 @@ The command must have a working API token to be able to communicate with Kolide.
 
 This command will list all checks that is used with our account on Kolide in JSON format:
 
-    ./device-health-checker.phar kolide:list-checks | json_pp
+    ./naisdevice-health-checker.phar kolide:list-checks | json_pp
 
 #### Command environment variables
 
@@ -58,11 +58,29 @@ The command must have a working API token to be able to communicate with Kolide.
 
 This command is used to update device health status based on live data from the Kolide API.
 
-#### Command options
+#### Command environment variables
 
-##### `-t/--kolide-api-token <token>` (required)
+##### `KOLIDE_API_TOKEN` (required)
 
 The command must have a working API token to be able to communicate with Kolide.
+
+##### `APISERVER_PASSWORD` (required)
+
+Password used for basic auth with the API server.
+
+##### `APISERVER_USERNAME` (optional, default: `'device-health-checker'`)
+
+Username used for Basic auth with the API server. Can be used when testing the script against a local running API server.
+
+##### `APISERVER_HOST` (optional, default: `'10.255.240.1'`)
+
+Can be specified to override the default host when communicating with the naisdevice API server.
+
+##### `APISERVER_PORT` (optional, default: `''`)
+
+Can be specified to override the default port when communicating with the naisdevice API server. If not specified the API client ends up using port `80`.
+
+#### Command options
 
 ##### `-i/--ignore-checks` (optional, repeatable)
 
@@ -72,38 +90,18 @@ Some checks are ignored by default (see above), and using the `-i` option will o
 
     -i <id> -i <another id>
 
-##### `-p/--apiserver-password` (required)
-
-Password used for basic auth with the API server.
-
-##### `-u/--apiserver-username` (optional, default: `'device-health-checker'`)
-
-Userame used for Basic auth with the API server. Can be used when testing the script against a local running API server.
-
-#### Environment variables
-
-The script also uses some environment variables:
-
-#### `APISERVER_HOST` (optional, default: `'10.255.240.1'`)
-
-Can be specified to override the default host when communicating with the Nais device API server.
-
-#### `APISERVER_PORT` (optional, default: `''`)
-
-Can be specified to override the default port when communicating with the Nais device API server. If not specified the API client ends up using port `80`.
-
 #### Usage
 
 Simply trigger the script to make it run:
 
-    APISERVER_HOST=localhost APISERVER_PORT=8080 ./device-health-checker.phar apiserver:update-devices -t $KOLIDE_API_TOKEN -p $APISERVER_PASSWORD
+    ./naisdevice-health-checker.phar apiserver:update-devices
 
 During the execution it will output device specific log messages in the following format:
 
 ```json
 {
-    "component": "device-health-checker",
-    "system": "nais-device",
+    "component": "naisdevice-health-checker",
+    "system": "naisdevice",
     "message": "<log message>",
     "serial": "<device serial>",
     "platform": "<device platform>",
