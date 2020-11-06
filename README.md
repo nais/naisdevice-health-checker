@@ -8,8 +8,8 @@ Scripts dealing with device health status of all Nais devices based on checks fr
 
 For development purposes you can clone the repository and install required dependencies:
 
-    git clone git@github.com:nais/device.git
-    cd device/device-health-checker
+    git clone git@github.com:nais/naisdevice-health-checker.git
+    cd naisdevice-health-checker
     composer install
 
 Remember to run tests after making changes:
@@ -20,11 +20,11 @@ For both of these commands to work you will need to install [Composer](https://g
 
 ## Releases
 
-A [Phar](https://www.php.net/manual/en/intro.phar.php) archive is built to ease the usage/installation of the scripts in this library. The following archive is generated and [released](https://github.com/nais/device/releases):
+A [Phar](https://www.php.net/manual/en/intro.phar.php) archive is built to ease the usage/installation of the scripts in this library. The following archive is generated and [released](https://github.com/nais/naisdevice-health-checker/releases):
 
-- `device-health-checker.phar`
+- `naisdevice-health-checker.phar`
 
-It can be executed like a regular binary once it is set as executable (`chmod +x device-health-checker.phar`).
+It can be executed like a regular binary once it is set as executable (`chmod +x naisdevice-health-checker.phar`).
 
 ## Commands
 
