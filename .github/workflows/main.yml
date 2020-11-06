@@ -88,3 +88,40 @@ jobs:
         with:
           name: naisdevice-health-checker
           path: bin
+
+  release:
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    needs:
+      - version
+      - run-tests
+      - build-phar
+
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Create release
+        id: new-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ needs.version.outputs.version }}
+          release_name: Release ${{ needs.version.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Download naisdevice-health-checker artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: naisdevice-health-checker
+          path: bin
+
+      - name: Upload naisdevice-health-checker.phar archive
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.new-release.outputs.upload_url }}
+          asset_path: ./bin/naisdevice-health-checker.phar
+          asset_name: naisdevice-health-checker.phar
+          asset_content_type: application/octet-stream
