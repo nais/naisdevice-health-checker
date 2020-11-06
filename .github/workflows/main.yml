@@ -1,6 +1,18 @@
 name: Test, build and release
 on: push
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate version string
+        id: version
+        run: echo ::set-output name=version::$(date "+%Y-%m-%d")-$(git --no-pager log -1 --pretty=%h)
+
   run-tests:
     runs-on: ubuntu-latest
 
