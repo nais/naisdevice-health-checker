@@ -1,5 +1,7 @@
 # Check and update health status of Nais devices
 
+[![Test, build and release](https://github.com/nais/naisdevice-health-checker/workflows/Test,%20build%20and%20release/badge.svg)](https://github.com/nais/naisdevice-health-checker/actions?query=workflow%3A%22Test%2C+build+and+release%22) [![Kolide checks severity](https://github.com/nais/naisdevice-health-checker/workflows/Kolide%20checks%20severity/badge.svg)](https://github.com/nais/naisdevice-health-checker/actions?query=workflow%3A%22Kolide+checks+severity%22)
+
 Scripts dealing with device health status of all Nais devices based on checks from the Kolide API.
 
 ## Installation
