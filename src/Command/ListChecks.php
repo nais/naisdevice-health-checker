@@ -6,7 +6,6 @@ use RuntimeException;
 use Symfony\Component\Console\{
     Command\Command,
     Input\InputInterface,
-    Input\InputOption,
     Output\OutputInterface,
 };
 
@@ -17,8 +16,7 @@ class ListChecks extends BaseCommand {
     protected function configure() : void {
         $this
             ->setDescription('List Kolide checks as JSON')
-            ->setHelp('This command will list all checks that is currently assigned to our account on Kolide in JSON format.')
-            ->addOption('kolide-api-token', 't', InputOption::VALUE_REQUIRED, 'Token used with the Kolide API');
+            ->setHelp('This command will list all checks that is currently assigned to our account on Kolide in JSON format.');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output) : void {
@@ -26,11 +24,13 @@ class ListChecks extends BaseCommand {
             return;
         }
 
-        if (empty($input->getOption('kolide-api-token'))) {
-            throw new RuntimeException('Specity a token for the Kolide API using -t/--kolide-api-token');
+        $kolideApiToken = $this->env('KOLIDE_API_TOKEN');
+
+        if ('' === $kolideApiToken) {
+            throw new RuntimeException('Specity a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable');
         }
 
-        $this->setKolideApiClient(new KolideApiClient($input->getOption('kolide-api-token')));
+        $this->setKolideApiClient(new KolideApiClient($kolideApiToken));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) : int {

@@ -32,13 +32,13 @@ It can be executed like a regular binary once it is set as executable (`chmod +x
 
 This command will validate that there exists a criticality level for all Kolide checks:
 
-    ./device-health-checker.phar kolide:validate-checks -t $KOLIDE_API_TOKEN
+    ./device-health-checker.phar kolide:validate-checks
 
-This command is run as a scheduled workflow in this repository, and if the command finds checks with missing tags it will send a message to the `#nais-device-alarms` channel. This is done using a webhook that is owned by the `Kolide checks validation` Slack app installed on the NAV IT workspace.
+This command is run as a scheduled workflow in this repository, and if the command finds checks with missing tags it will send a message to the `#naisdevice-kolide-admin` channel. This is done using a webhook that is owned by the `Kolide checks validation` Slack app installed on the NAV IT workspace.
 
-#### Command options
+#### Command environment variables
 
-##### `-t/--kolide-api-token <token>` (required)
+##### `KOLIDE_API_TOKEN` (required)
 
 The command must have a working API token to be able to communicate with Kolide.
 
@@ -46,11 +46,11 @@ The command must have a working API token to be able to communicate with Kolide.
 
 This command will list all checks that is used with our account on Kolide in JSON format:
 
-    ./device-health-checker.phar kolide:list-checks -t $KOLIDE_API_TOKEN | json_pp
+    ./device-health-checker.phar kolide:list-checks | json_pp
 
-#### Command options
+#### Command environment variables
 
-##### `-t/--kolide-api-token <token>` (required)
+##### `KOLIDE_API_TOKEN` (required)
 
 The command must have a working API token to be able to communicate with Kolide.
 

@@ -10,13 +10,17 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversDefaultClass Naisdevice\HealthChecker\Command\ListChecks
  */
 class ListChecksTest extends TestCase {
+    protected function setUp() : void {
+        putenv('KOLIDE_API_TOKEN');
+    }
+
     /**
      * @covers ::initialize
      */
     public function testFailsOnMissingOption() : void {
         $commandTester = new CommandTester(new ListChecks());
         $this->expectExceptionObject(new RuntimeException(
-            'Specity a token for the Kolide API using -t/--kolide-api-token'
+            'Specity a token for the Kolide API by setting the KOLIDE_API_TOKEN environment variable'
         ));
         $commandTester->execute([]);
     }
@@ -64,9 +68,7 @@ class ListChecksTest extends TestCase {
         ]));
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            '--kolide-api-token' => 'sometoken',
-        ]);
+        $commandTester->execute([]);
 
         $output = $commandTester->getDisplay();
 
