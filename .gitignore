@@ -4,3 +4,4 @@ build
 local
 *.phar
 test.php
+.DS_Store
