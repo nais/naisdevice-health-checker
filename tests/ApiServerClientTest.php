@@ -11,7 +11,7 @@ use GuzzleHttp\{
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass Nais\Device\ApiServerClient
+ * @coversDefaultClass Naisdevice\HealthChecker\ApiServerClient
  */
 class ApiServerClientTest extends TestCase {
     private function getMockClient(array $responses, array &$history = []) : HttpClient {

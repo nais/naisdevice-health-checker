@@ -7,7 +7,7 @@ use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @coversDefaultClass Nais\Device\Command\ListChecks
+ * @coversDefaultClass Naisdevice\HealthChecker\Command\ListChecks
  */
 class ListChecksTest extends TestCase {
     /**

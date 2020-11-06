@@ -4,7 +4,7 @@ namespace Naisdevice\HealthChecker;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass Nais\Device\Severity
+ * @coversDefaultClass Naisdevice\HealthChecker\Severity
  */
 class SeverityTest extends TestCase {
     public function getTags() : array {

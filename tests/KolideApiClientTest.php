@@ -11,7 +11,7 @@ use GuzzleHttp\{
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass Nais\Device\KolideApiClient
+ * @coversDefaultClass Naisdevice\HealthChecker\KolideApiClient
  */
 class KolideApiClientTest extends TestCase {
     private function getMockClient(array $responses, array &$history = []) : HttpClient {

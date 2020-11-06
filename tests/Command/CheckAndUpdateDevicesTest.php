@@ -14,7 +14,7 @@ use Symfony\Component\Console\{
 };
 
 /**
- * @coversDefaultClass Nais\Device\Command\CheckAndUpdateDevices
+ * @coversDefaultClass Naisdevice\HealthChecker\Command\CheckAndUpdateDevices
  */
 class CheckAndUpdateDevicesTest extends TestCase {
     public function getMissingParams() : array {
