@@ -1,0 +1,41 @@
+name: Test, build and release
+on: push
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Debug PHP version information
+        run: |
+          composer --version
+          php -v
+          php -i
+          php -m
+
+      - name: Validate composer files
+        run: composer validate --strict
+
+      - name: Get Composer Cache Directory
+        id: composer-cache-dir
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Lint files
+        run: composer run lint
+
+      - name: Run tests
+        run: composer run test
