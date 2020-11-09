@@ -34,7 +34,7 @@ class Severity {
             $severityLevels[] = self::$tags[strtolower($tag)] ?? self::WARNING;
         }
 
-        return min($severityLevels);
+        return (int) min($severityLevels);
     }
 
     /**

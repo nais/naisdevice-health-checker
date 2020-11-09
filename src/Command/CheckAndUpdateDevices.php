@@ -55,7 +55,10 @@ class CheckAndUpdateDevices extends BaseCommand {
         // Force our own exception handler from here on
         $this->getApplication()->setCatchExceptions(false);
 
-        $ignoreChecks = array_unique(array_map('intval', $input->getOption('ignore-checks')));
+        /** @var array<int> */
+        $ignoreCheckIds = $input->getOption('ignore-checks');
+
+        $ignoreChecks = array_unique(array_map('intval', $ignoreCheckIds));
         $naisDevices = array_map(fn(array $device) : array => [
             'serial'          => $device['serial'],
             'platform'        => $device['platform'],
@@ -63,6 +66,8 @@ class CheckAndUpdateDevices extends BaseCommand {
             'isHealthy'       => $device['isHealthy'],
             'kolideLastSeen'  => $device['kolideLastSeen'],
         ], $this->apiServerClient->getDevices());
+
+        /** @var array<int,array{id:int,serial:string,platform:string,assigned_owner:array{email:string},last_seen_at:string,failure_count:int}> */
         $kolideDevices = $this->kolideApiClient->getAllDevices();
         $updatedNaisDevices = [];
 
@@ -122,9 +127,9 @@ class CheckAndUpdateDevices extends BaseCommand {
      * @param string $username
      * @param string $serial
      * @param string $platform
-     * @param array $kolideDevices
+     * @param array<int,array{id:int,serial:string,platform:string,assigned_owner:array{email:string},last_seen_at:string,failure_count:int}> $kolideDevices
      * @throws HealthCheckerException
-     * @return array Returns the matching Kolide device
+     * @return array{id:int,serial:string,platform:string,assigned_owner:array{email:string},last_seen_at:string,failure_count:int} Returns the matching Kolide device
      */
     private function identifyKolideDevice(string $username, string $serial, string $platform, array $kolideDevices) : array {
         $devices = array_values(array_filter($kolideDevices, function(array $kolideDevice) use ($username, $serial, $platform) : bool {
@@ -159,10 +164,11 @@ class CheckAndUpdateDevices extends BaseCommand {
      * Check if a device is currently failing
      *
      * @param int $deviceId ID of the device at Kolide
-     * @param array $ignoreChecks A list of check IDs to ignore
-     * @return array
+     * @param array<int> $ignoreChecks A list of check IDs to ignore
+     * @return array<int,array{check_id:int,timestamp:string}>
      */
     private function getFailingDeviceChecks(int $deviceId, array $ignoreChecks = []) : array {
+        /** @var array<int,array{check_id:int,resolved_at:?string,timestamp:string}> */
         $failures = $this->kolideApiClient->getDeviceFailures($deviceId);
         $failingChecks = [];
 
@@ -176,8 +182,7 @@ class CheckAndUpdateDevices extends BaseCommand {
                 continue;
             }
 
-            $tags = $this->kolideApiClient->getCheck($failure['check_id'])['tags'];
-            $graceTime = Severity::getGraceTime($tags);
+            $graceTime = Severity::getGraceTime($this->kolideApiClient->getCheck($failure['check_id'])['tags'] ?? []);
 
             if (Severity::INFO === $graceTime) {
                 continue;
@@ -201,11 +206,11 @@ class CheckAndUpdateDevices extends BaseCommand {
      * @param string $serial
      * @param string $platform
      * @param string $username
-     * @param array  $kolideDevices
+     * @param array<int,array{id:int,serial:string,platform:string,assigned_owner:array{email:string},last_seen_at:string,failure_count:int}> $kolideDevices
      * @return void
      */
     private function log(OutputInterface $output, string $message, string $serial = null, string $platform = null, string $username = null, array $kolideDevices = null) : void {
-        $output->writeln(json_encode(array_filter([
+        $output->writeln((string) json_encode(array_filter([
             'component'     => 'naisdevice-health-checker',
             'system'        => 'naisdevice',
             'message'       => $message,

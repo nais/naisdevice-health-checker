@@ -9,11 +9,19 @@ use GuzzleHttp\{
     Middleware,
 };
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface,
+};
 
 /**
  * @coversDefaultClass Naisdevice\HealthChecker\KolideApiClient
  */
 class KolideApiClientTest extends TestCase {
+    /**
+     * @param array<ResponseInterface> $responses
+     * @param array<int,array{request:RequestInterface,response:ResponseInterface}> $history
+     */
     private function getMockClient(array $responses, array &$history = []) : HttpClient {
         $handler = HandlerStack::create(new MockHandler($responses));
         $handler->push(Middleware::history($history));
@@ -30,8 +38,8 @@ class KolideApiClientTest extends TestCase {
         $clientHistory = [];
         $httpClient = $this->getMockClient(
             [
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
             ],
             $clientHistory
         );
@@ -54,8 +62,8 @@ class KolideApiClientTest extends TestCase {
         $clientHistory = [];
         $httpClient = $this->getMockClient(
             [
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
             ],
             $clientHistory
         );
@@ -77,8 +85,8 @@ class KolideApiClientTest extends TestCase {
         $clientHistory = [];
         $httpClient = $this->getMockClient(
             [
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1, 'failing_device_count' => 1], ['id' => 2, 'failing_device_count' => 3]]])),
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3, 'failing_device_count' => 2], ['id' => 4, 'failing_device_count' => 0]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1, 'failing_device_count' => 1], ['id' => 2, 'failing_device_count' => 3]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3, 'failing_device_count' => 2], ['id' => 4, 'failing_device_count' => 0]]])),
             ],
             $clientHistory
         );
@@ -102,8 +110,8 @@ class KolideApiClientTest extends TestCase {
         $clientHistory = [];
         $httpClient = $this->getMockClient(
             [
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
             ],
             $clientHistory
         );
@@ -125,8 +133,8 @@ class KolideApiClientTest extends TestCase {
         $clientHistory = [];
         $httpClient = $this->getMockClient(
             [
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
-                new Response(200, [], json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => 'next'], 'data' => [['id' => 1], ['id' => 2]]])),
+                new Response(200, [], (string) json_encode(['pagination' => ['next_cursor' => ''], 'data' => [['id' => 3], ['id' => 4]]])),
             ],
             $clientHistory
         );

@@ -37,8 +37,9 @@ class ValidateKolideChecksSeverity extends BaseCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) : int {
-        $checks = $this->kolideApiClient->getAllChecks();
-        array_multisort(array_column($checks, 'id'), SORT_ASC, $checks);
+        $checks   = $this->kolideApiClient->getAllChecks();
+        $checkIds = array_column($checks, 'id');
+        array_multisort($checkIds, SORT_ASC, $checks);
         $incompleteChecks = [];
 
         foreach ($checks as $check) {

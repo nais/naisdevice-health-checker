@@ -1,0 +1,12 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        - message: '#Cannot call method (setCatchExceptions|getDevices|getAllDevices|updateDevices|getDeviceFailures|getCheck)\(\) on .*\|null\.#'
+          path: src/Command/CheckAndUpdateDevices.php
+        - message: '#Cannot call method getAllChecks\(\) on Naisdevice\\HealthChecker\\KolideApiClient\|null\.#'
+          path: src/Command/ListChecks.php
+        - message: '#Cannot call method getAllChecks\(\) on Naisdevice\\HealthChecker\\KolideApiClient\|null\.#'
+          path: src/Command/ValidateKolideChecksSeverity.php

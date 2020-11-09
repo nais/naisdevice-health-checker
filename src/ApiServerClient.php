@@ -35,7 +35,7 @@ class ApiServerClient {
     /**
      * Get all devices
      *
-     * @return array
+     * @return array<int,array<string,mixed>>
      */
     public function getDevices() : array {
         return json_decode($this->client->get('/devices')->getBody()->getContents(), true) ?: [];
@@ -44,7 +44,7 @@ class ApiServerClient {
     /**
      * Update devices
      *
-     * @param array $devices List of devices to update
+     * @param array<int,array<string,mixed>> $devices List of devices to update
      * @return void
      */
     public function updateDevices(array $devices) : void {

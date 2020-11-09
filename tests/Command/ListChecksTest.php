@@ -25,6 +25,9 @@ class ListChecksTest extends TestCase {
         $commandTester->execute([]);
     }
 
+    /**
+     * @return array<string,array{0:array<int,array{id:int,failing_device_count:int,name:string,description:string,notification_strategy:string}>,1:string}>
+     */
     public function getChecks() : array {
         return [
             'no checks' => [
@@ -60,6 +63,7 @@ class ListChecksTest extends TestCase {
      * @covers ::initialize
      * @covers ::configure
      * @covers ::__construct
+     * @param array<int,array{id:int,failing_device_count:int,name:string,description:string,notification_strategy:string}> $checks
      */
     public function testCanListChecks(array $checks, string $expectedOutput) : void {
         $command = new ListChecks();

@@ -9,11 +9,19 @@ use GuzzleHttp\{
     Middleware,
 };
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface,
+};
 
 /**
  * @coversDefaultClass Naisdevice\HealthChecker\ApiServerClient
  */
 class ApiServerClientTest extends TestCase {
+    /**
+     * @param array<ResponseInterface> $responses
+     * @param array<array{request:array<RequestInterface>,response:array<ResponseInterface>}> $history
+     */
     private function getMockClient(array $responses, array &$history = []) : HttpClient {
         $handler = HandlerStack::create(new MockHandler($responses));
         $handler->push(Middleware::history($history));

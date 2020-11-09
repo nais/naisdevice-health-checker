@@ -34,7 +34,7 @@ class ListChecks extends BaseCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) : int {
-        $output->writeln(json_encode($this->kolideApiClient->getAllChecks()));
+        $output->writeln((string) json_encode($this->kolideApiClient->getAllChecks()));
         return Command::SUCCESS;
     }
 }

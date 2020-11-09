@@ -23,6 +23,9 @@ class CheckAndUpdateDevicesTest extends TestCase {
         putenv('APISERVER_PASSWORD');
     }
 
+    /**
+     * @return array<string,array{0:array<string>,1:string}>
+     */
     public function getMissingParams() : array {
         return [
             'missing token' => [
@@ -45,6 +48,7 @@ class CheckAndUpdateDevicesTest extends TestCase {
     /**
      * @dataProvider getMissingParams
      * @covers ::initialize
+     * @param array<string> $envVars
      */
     public function testFailsOnMissingEnvVars(array $envVars, string $error) : void {
         foreach ($envVars as $var) {
@@ -56,12 +60,26 @@ class CheckAndUpdateDevicesTest extends TestCase {
         $commandTester->execute([]);
     }
 
+    /**
+     * @return array<
+     *  string,
+     *  array{
+     *   naisDevices:array<int,array{serial:string,platform:string,username:string,isHealthy:bool,kolideLastSeen:int}>,
+     *   kolideDevices:array<int,array{id:int,serial:string,platform:string,assigned_owner:array{email:string},failure_count:int,last_seen_at:string}>,
+     *   expectedLogMessages:array<string>,
+     *   expectedLogSerials:array<?string>,
+     *   expectedLogPlatforms:array<?string>,
+     *   expectedLogUsernames:array<?string>,
+     *   expectedUpdatePayload:array<int,array{serial:string,platform:string,username:string,isHealthy:bool,kolideLastSeen:int}>
+     * }
+     * >
+     */
     public function getDeviceData() : array {
         return [
             'no nais devices' => [
                 'naisDevices' => [],
                 'kolideDevices' => [],
-                'expectedMessages' => [
+                'expectedLogMessages' => [
                     'No Nais devices to update :(',
                 ],
                 'expectedLogSerials' => [
@@ -222,6 +240,13 @@ class CheckAndUpdateDevicesTest extends TestCase {
      * @covers ::execute
      * @covers ::identifyKolideDevice
      * @covers ::log
+     * @param array<int,array{serial:string,platform:string,username:string,isHealthy:bool,kolideLastSeen:int}> $naisDevices
+     * @param array<int,array{id:int,serial:string,platform:string,assigned_owner:array{email:string},failure_count:int,last_seen_at:string}> $kolideDevices
+     * @param array<string> $expectedLogMessages
+     * @param array<?string> $expectedLogSerials
+     * @param array<?string> $expectedLogPlatforms
+     * @param array<?string> $expectedLogUsernames
+     * @param array<int,array{serial:string,platform:string,username:string,isHealthy:bool,kolideLastSeen:int}> $expectedUpdatePayload
      */
     public function testCanUpdateDevices(array $naisDevices, array $kolideDevices, array $expectedLogMessages, array $expectedLogSerials, array $expectedLogPlatforms, array $expectedLogUsernames, array $expectedUpdatePayload) : void {
         $apiServerClient = $this->createConfiguredMock(ApiServerClient::class, [
