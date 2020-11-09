@@ -31,7 +31,7 @@ class CheckAndUpdateDevices extends BaseCommand {
 
     protected function initialize(InputInterface $input, OutputInterface $output) : void {
         $kolideApiToken    = $this->env('KOLIDE_API_TOKEN');
-        $apiserverUsername = $this->env('APISERVER_USERNAME');
+        $apiserverUsername = $this->env('APISERVER_USERNAME') ?: 'device-health-checker';
         $apiserverPassword = $this->env('APISERVER_PASSWORD');
 
         if (null === $this->kolideApiClient && '' === $kolideApiToken) {
