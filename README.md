@@ -114,3 +114,4 @@ During the execution it will output device specific log messages in the followin
 For generic log messages the `serial`, `platform` and `username` keys will be omitted. The value of the `timestamp` key is a [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time).
 
 On failure it will output an error message and the exit code will be non-zero.
+
