@@ -206,10 +206,9 @@ class CheckAndUpdateDevices extends BaseCommand {
      * @param string $serial
      * @param string $platform
      * @param string $username
-     * @param array<int,array{id:int,serial:string,platform:string,assigned_owner:array{email:string},last_seen_at:string,failure_count:int}> $kolideDevices
      * @return void
      */
-    private function log(OutputInterface $output, string $message, string $serial = null, string $platform = null, string $username = null, array $kolideDevices = null) : void {
+    private function log(OutputInterface $output, string $message, string $serial = null, string $platform = null, string $username = null) : void {
         $output->writeln((string) json_encode(array_filter([
             'component'     => 'naisdevice-health-checker',
             'system'        => 'naisdevice',
@@ -219,7 +218,6 @@ class CheckAndUpdateDevices extends BaseCommand {
             'username'      => $username,
             'level'         => 'info',
             'timestamp'     => time(),
-            'kolideDevices' => $kolideDevices
         ])));
     }
 }
