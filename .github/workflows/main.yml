@@ -4,7 +4,7 @@ on: push
 
 jobs:
   version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -17,10 +17,15 @@ jobs:
         run: echo ::set-output name=version::$(date "+%Y-%m-%d")-$(git --no-pager log -1 --pretty=%h)
 
   run-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
 
       - name: Debug PHP version information
         run: |
@@ -59,10 +64,15 @@ jobs:
         run: composer run sa
 
   build-phar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
 
       - name: Get Composer Cache Directory
         id: composer-cache-dir
@@ -100,7 +110,7 @@ jobs:
       - run-tests
       - build-phar
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
